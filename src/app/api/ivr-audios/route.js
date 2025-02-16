@@ -12,7 +12,6 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    console.log(formData)
     const file = formData.get("file");
     const name = formData.get("filename");
     const format = formData.get("format");

@@ -1,12 +1,24 @@
-import { AppBar, Toolbar, Typography, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
+"use client";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { signOut } from "next-auth/react";
+import { useSessionContext } from "@/app/context/SessionContext";
 
 export default function Header() {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const {session} = useSessionContext()
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,9 +28,8 @@ export default function Header() {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    setAnchorEl(null);
-    console.log("Logout clicked");
+  const handleLogout = async () => {
+    signOut({ callbackUrl: "/login" });
   };
 
   return (
@@ -42,14 +53,26 @@ export default function Header() {
           <Typography
             variant="h6"
             component="span"
-            sx={{ color: theme.text.secondary, marginLeft: 1, fontSize: "17px" }}
+            sx={{
+              color: theme.text.secondary,
+              marginLeft: 1,
+              fontSize: "17px",
+            }}
           >
             Talk
           </Typography>
         </div>
+        {session?.user?.id &&
         <div>
-          <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-            <Avatar alt="User" src="/avatar.png" />
+          <IconButton
+            onClick={handleMenuOpen}
+            sx={{ p: 0, background: "#eac822", border: "1px solid #a3a3a3" }}
+          >
+            <Avatar
+              alt="User"
+              src="/avatar.png"
+              sx={{ height: 26, width: 26 }}
+            />
           </IconButton>
           <Menu
             anchorEl={anchorEl}
@@ -63,6 +86,7 @@ export default function Header() {
             </MenuItem>
           </Menu>
         </div>
+}
       </Toolbar>
     </AppBar>
   );

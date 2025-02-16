@@ -1,19 +1,25 @@
 "use client";
+
 import { List, ListItem, ListItemText, ListItemIcon, Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useMenuItems from "../../hooks/useMenuItems";
+import { useSessionContext } from "../../context/SessionContext";
 
 const Sidebar = () => {
   const router = useRouter();
   const { menuItems } = useMenuItems();
+  const { session } = useSessionContext();
+  if (!session?.user?.id) {
+    return;
+  }
 
   return (
     <Box
       sx={{
         width: 250,
         position: "fixed",
-        height: '100vh',
-        top: 55, 
+        height: "100vh",
+        top: 55,
         left: 0,
         bottom: 70,
         bgcolor: "#2e3e4e",
@@ -29,7 +35,7 @@ const Sidebar = () => {
         },
       }}
     >
-      <List sx={{color: '#ffffff'}}>
+      <List sx={{ color: "#ffffff" }}>
         {menuItems.map((item) => (
           <ListItem
             key={item.name}
@@ -38,10 +44,10 @@ const Sidebar = () => {
               cursor: "pointer",
               "&:hover": { bgcolor: "#eec71c" },
               borderBottom: "1px solid #dcdcdc",
-              borderLeft: "3px solid #eec71c"
+              borderLeft: "3px solid #eec71c",
             }}
           >
-              <ListItemIcon sx={{ color: "primary.main" }}>
+            <ListItemIcon sx={{ color: "primary.main" }}>
               {item?.icon}
             </ListItemIcon>
             <ListItemText primary={item.name} />
@@ -49,6 +55,7 @@ const Sidebar = () => {
         ))}
       </List>
     </Box>
-  )
-          }
-export default Sidebar
+  );
+};
+
+export default Sidebar;

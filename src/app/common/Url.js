@@ -15,3 +15,7 @@ export const IVR_URLS = {
 export const EXTENSIONS_URL = {
     base : "/api/extensions",
 }
+
+export const SESSION_URL = {
+    base : "/api/session",
+}
